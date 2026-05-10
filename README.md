@@ -1,6 +1,22 @@
 # MinION Pathogen Screening Pipeline
 
-PMDA-compliant metagenomic analysis pipeline for xenotransplantation donor pig screening using Oxford Nanopore MinION Mk1D.
+> **ARCHIVED 2026-05-10 — repositioned as Fluxia Donor Screening on a Vercel + Convex + Modal stack.**
+>
+> This codebase was **never deployed to AWS**. No terraform state, no Lambda CloudWatch logs, no S3 production buckets — see Stage 1 PoC §13.5 of the Fluxia v3.0 implementation record for the full audit. The "47 samples processed" and similar figures in `docs/grants/` are explicitly labelled "Scenario" — hypothetical metrics for grant submissions, not measured operational data.
+>
+> **The authoritative donor-screening implementation now lives at:**
+> [`fluxia-samd/apps/donor-screening/`](https://github.com/masterleopold/fluxia-samd/tree/main/apps/donor-screening) (the Fluxia SaMD monorepo).
+>
+> Pointers from v3.0 documentation reference specific functions in this repo as **SOUP sources**:
+> - `scripts/phase1_basecalling/generate_summary_from_fastq.py:31-176` → ported to `fluxia-samd/apps/qc/qc/fastq_summary.py:compute_qc_metrics`
+> - `scripts/phase5_quantification/absolute_copy_number.py:109-140` → ported to `fluxia-samd/apps/donor-screening/quantification/copy_number.py:compute_copy_numbers`
+> - `scripts/phase3_host_removal/remove_host.sh` → ported to `fluxia-samd/apps/donor-screening/compute/run_host_removal.py:remove_host`
+>
+> This repo is preserved (rather than deleted) for IEC 62304 SOUP traceability + JST grant trail addressability + AWS-fallback recovery posture. Tag: `archive/aws-design-never-deployed`. See the Fluxia v3.0 closure docs (Implementation/06d) for the SDLC closeout statement.
+
+----
+
+PMDA-compliant metagenomic analysis pipeline design for xenotransplantation donor pig screening using Oxford Nanopore MinION Mk1D. *(See archive banner above — this design was never built.)*
 
 ## Overview
 
