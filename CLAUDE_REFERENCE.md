@@ -1,6 +1,8 @@
 # CLAUDE_REFERENCE.md
 
-Detailed reference documentation moved from CLAUDE.md for performance optimization.
+Detailed reference documentation moved from CLAUDE.md for performance optimization. Start at [CLAUDE.md](CLAUDE.md); come here only for the full directory tree, the PERV marker table, and the as-designed AWS detail.
+
+> **Everything below describes the design as specified, not a system that ran.** This repo was archived 2026-05-10 and never deployed to AWS — see the status section of [CLAUDE.md](CLAUDE.md). Instance types, cost percentages, scaling strategy, and the version history in "Recent Implementation History" are design intent and changelog entries, never measured behaviour. The debug commands at the bottom target AWS resources that do not exist.
 
 ## Architecture Overview
 
@@ -41,7 +43,7 @@ lambda/
 
 surveillance/                  # 4-Virus Surveillance System (v2.2.0)
 ├── external/                  # External information collectors
-│   ├── estat_client.py        # E-Stat API (APP_ID: bae1f981a6d093a9676b03c8eea37324b8de421b)
+│   ├── estat_client.py        # E-Stat API (APP_ID via E_STAT_APP_ID env var)
 │   ├── maff_scraper.py        # MAFF surveillance reports
 │   └── academic_monitor.py    # PubMed + J-STAGE web scraping
 ├── internal/                  # Internal pipeline integration
@@ -74,10 +76,16 @@ tools/
 └── monitoring_dashboard.py    # Streamlit dashboard
 
 infrastructure/
-├── terraform/                 # IaC for AWS resources
-├── cloudformation/           # Stack templates
-└── custom_amis/              # EC2 AMI definitions
+├── terraform/                 # IaC for AWS resources (never applied; no state file)
+├── database/                  # schema.sql, seed_data.sql
+└── surveillance/              # DynamoDB schemas + surveillance terraform
+
+ec2_setup/                     # AMI build + tool install scripts (Dorado, Kraken2, BLAST, ...)
+md/                            # Original Japanese design specs (91-pathogen list, PMDA assessment)
+docs-portal/                   # Next.js 15 / React 19 documentation site (separate toolchain)
 ```
+
+Verified 2026-07-27: `infrastructure/cloudformation/` and `infrastructure/custom_amis/` do not exist — AMI definitions live in `ec2_setup/`, and there are no CloudFormation templates.
 
 ## Extended Code Patterns
 
@@ -232,11 +240,13 @@ def test_pipeline_integration():
 
 ## Testing Strategy
 
-### Test Coverage Requirements
+### Test Coverage Requirements (as specified, not achieved)
 - Unit tests: >80% coverage
 - Integration tests: All phase transitions
 - E2E tests: Complete pipeline runs
 - Performance tests: Throughput validation
+
+Actual state measured 2026-07-27: 22 failed / 8 passed, plus 3 modules failing collection on missing `boto3`. `tests/performance/` does not exist, so no benchmark suite was ever written.
 
 ### Test Execution
 ```bash
@@ -245,9 +255,6 @@ pytest tests/ --cov=scripts --cov=lambda
 
 # Slack integration testing
 python surveillance/tests/test_slack_integration.py --test-all
-
-# Performance testing
-python tests/performance/benchmark_pipeline.py
 ```
 
 ## Support and Troubleshooting
