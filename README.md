@@ -295,12 +295,14 @@ vi /etc/minion-pipeline/custom.yaml
 
 ### 91 Pathogen Coverage
 
-The pipeline screens for all 91 PMDA-designated pathogens:
+The pipeline is designed to screen all 91 PMDA-designated pathogens:
 - **Viruses**: 41 pathogens including circular/ssDNA viruses
 - **Bacteria**: 27 pathogens
 - **Parasites**: 19 pathogens
 - **Fungi**: 2 pathogens
 - **Special Management**: 5 pathogens (PCV2, PCV3, PERV-A/B/C)
+
+> **Count discrepancy (found 2026-07-27, unresolved).** These figures do not reconcile with `templates/config/pmda_pathogens.json`, which declares `total_pathogens: 91` while `categories.viruses.count` says 41 against an array of 48 entries. Across all categories the config enumerates 101 entries / 98 unique names (3 names appear in both `viruses` and `special_management`). Treat `md/厚労省異種移植指針_91病原体リスト.md` as the authority and re-derive the counts before citing them. The PMDA compliance tests are currently red against this config.
 
 ### Critical Pathogens
 
